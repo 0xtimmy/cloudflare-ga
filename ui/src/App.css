@@ -1,0 +1,14 @@
+.main {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.dashboards {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+}
+
+.dash {
+    padding: 1rem 1.618rem;
+}

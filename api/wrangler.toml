@@ -1,0 +1,7 @@
+name = "cloudflare-ga-api"
+compatibility_date = "2022-12-29"
+main = "index.ts"
+
+kv_namespaces = [
+    { binding = "CLOUDFLARE_GA_KV", id = "b572d26e7d1e4d9aa1e9b8afd8427724", preview_id = "53cf4936da54468ba5890b4aa0406468" }
+]
