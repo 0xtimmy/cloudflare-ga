@@ -1,14 +1,78 @@
-.main {
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap');
+
+:root {
+    font-family: "JetBrains Mono", monospace;
+    color: #262626;
+}
+
+body {
+    margin: 0;
+}
+
+/*  Layout */
+#app {
+    overflow: auto;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+header {
+    margin: 1rem;
+    padding: 1rem 1.618rem;
+    border: 1px solid #262626;
+}
+
+main {
+    margin: 1rem;
     display: flex;
     flex-flow: row wrap;
+    gap: 1rem;
+    align-items: stretch;
 }
+
+/* Dashboards */
 
 .dashboards {
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;
+    gap: 1rem;
 }
 
 .dash {
+    flex-grow: 1;
+}
+
+.dash {
+    border: 1px solid #262626;
     padding: 1rem 1.618rem;
+}
+
+/* Ranking */
+
+.rank-item {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 0.618rem;
+}
+
+.ranking {
+    width: 2rem;
+}
+
+.rank-label {
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+#app::-webkit-scrollbar {
+    display: none;
+}
+
+#app {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

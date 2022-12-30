@@ -1,17 +1,30 @@
-import { useState, useMemo } from "react"
-import type { AxisOptions } from "react-charts";
-import { Chart } from "react-charts";
+import { useState } from "react"
+import { Line } from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
 
-type TrafficRecord = {
-    timestamp: number,
-    value: number,
-}
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 function Traffic() {
 
     const [loading, setLoading] = useState(true);
 
-    const [data, setData] = useState(null);
     const [http, setHttp] = useState([]);
     const [total, setTotal] = useState([]);
 
@@ -20,31 +33,22 @@ function Traffic() {
             const res = await fetch("https://cloudflare-ga-api.0xtimmy.workers.dev/traffic-change", {
                 method: "GET"
             });
-            const jsonrecord = await res.json();
+            const result = await res.json();
 
             setLoading(false);
-            setData(jsonrecord);
-            setTotal(jsonrecord.data.total.map((datum) => {
-                return { value: parseFloat(datum.value), timestamp: new Date(datum.timestamp) };
-            }))
-            setHttp(jsonrecord.data.http.map((datum) => {
-                return { value: parseFloat(datum.value), timestamp: new Date(datum.timestamp) };
+            setTotal(result.data.total.map((datum) => {
+                return { y: parseFloat(datum.value), x: datum.timestamp };
+            }));
+            setHttp(result.data.http.map((datum) => {
+                return { y: parseFloat(datum.value), x: datum.timestamp };
             }));
 
         }
     })();
 
-    const primaryAxis = useMemo(
-        (): AxisOptions<TrafficRecord> => {
-            return { getValue: (datum) => datum.timestamp };
-        }, []
-     );
+    const options = {
 
-    const secondaryAxes = useMemo(
-        (): AxisOptions<TrafficRecord>[] => [
-            { getValue: datum => datum.value, },
-        ], []
-     );
+    }
 
     return (
         <div className="dash">
@@ -52,18 +56,14 @@ function Traffic() {
                 { loading ?
                     <div>loading...</div>
                     :
-                    <Chart
-                        style={{
-                            position: "relative",
-                            height: "500px",
-                        }}
-                        options={{
-                            data: [
-                                { label: "Total", data: total },
-                                { label: "HTTP", data: http }
-                            ],
-                            primaryAxis: primaryAxis,
-                            secondaryAxes: secondaryAxes
+                    <Line
+                        datasetIdKey="id"
+                        options={options}
+                        data={{
+                            datasets: [
+                                { id: 1, label: "Total", data: total, borderColor: '#243763', backgroundColor: '#243763', radius: 2 },
+                                { id: 2, label: "Http", data: http, borderColor: '#FF6E31', backgroundColor: '#FF6E31', radius: 2 }
+                            ]
                         }}
                     />
                 }
